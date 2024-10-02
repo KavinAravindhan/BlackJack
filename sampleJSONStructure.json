@@ -1,0 +1,25 @@
+{
+  "player": {
+    "cards": [
+      {
+        "value": 5,
+        "suit": "Diamonds"
+      },
+      {
+        "isLow": "false",
+        "value": 11
+      }
+    ]
+  },
+  "dealer": {
+    "cards": [
+      {
+        "value": 5
+      }, 
+      {
+        "isLow": "false",
+        "value": 11
+      }
+    ]
+  }
+}
