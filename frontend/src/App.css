@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css?family=Ultra');
+@import url('https://fonts.googleapis.com/css?family=Alice');
+
+.App {
+  align-items: center;
+  background-image: url("pokerTableBackground.png");
+  background-size: cover;                    
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: #034108;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #920808;
+}
+
+.App-main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Alice', serif;
+  text-align: center;
+}
+
+.App-header {
+  font-family: 'Ultra', serif;
+}
+
+.Player-cards {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  /* animation: fadeIn 2s;
+  opacity: 1; */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.Card-front {
+  display: inline-block;
+  position: relative;
+  width: 5em;
+  height: 7em;
+  background-color: white;
+  color: red;
+  box-shadow: 0 0.0625em 0.125em rgba(0, 0, 0, 0.15);
+  border-radius: 0.25em;
+  margin-right: 0.5em;
+  margin-left: 0.5em;
+  animation: fadeIn 2s;
+  opacity: 1;
+}
+
+.Top-value {
+  position: absolute;
+  top: 0.1em;
+  left: 0.35em;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.Bottom-value {
+  position: absolute;
+  bottom: 0.15em;
+  right: 0.25em;
+  font-size: 1em;
+  font-weight: 600;
+  transform: rotate(180deg);
+}
+
+.Suit {
+  position: absolute;
+  top: 1.075em;
+  text-align: center;
+  font-weight: 600;
+  font-size: 2em;
+  left: 0.81em;
+}
+
+.Card-backside {
+  width: 30%;
+}
+
+.Card-backside-test {
+  background-image: url('./card.png');
+  background-size: contain;
+}
+
+.Card-wrapper {
+  visibility: hidden;
+}
+
+.HitStayButtons {
+  padding: 0.4em;
+  font-size: 0.8em;
+  text-align: center;
+  color: black;
+  background-color: whitesmoke;
+  align-items: center;
+  border-radius: 5px;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+  margin-left: 2em;
+  margin-right: 1em;
+  padding-left: 0.7em;
+  padding-right: 0.7em;
+  font-family: 'Alice', serif;
+  cursor: pointer;
+}
+
+.HitStayButtons:hover {
+  background: gainsboro;
+}
+
+.NewandStartGameButton {
+  padding: 0.3em;
+  font-size: 1em;
+  text-align: center;
+  color: black;
+  background-color: whitesmoke;
+  font-family: 'Alice', serif;
+  cursor: pointer;
+}
+
+.NewandStartGameButton:hover {
+  background: gainsboro;
+}

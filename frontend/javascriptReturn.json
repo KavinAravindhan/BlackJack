@@ -1,0 +1,5 @@
+{
+  "player": {
+    "action": "hit" // get another card
+  }
+}
