@@ -26,8 +26,8 @@ db = SQLAlchemy(app)
 print("\n DATABASE CONNECTION ESTABLISHED SUCCESSFULLY \n")
 
 class BlackjackGameSession(db.Model):
-    _tablename_ = 'kavin'
-    _table_args_ = {'schema': 'GameSession_Schema'}  # Define schema
+    __tablename__ = 'Blackjack'
+    __table_args__ = {'schema': 'GameSession_Schema'}  # Define schema
 
     Session_id = db.Column(db.Integer, primary_key=True)
     Username = db.Column(db.String(255))
@@ -44,21 +44,67 @@ class BlackjackGameSession(db.Model):
             'Username': self.Username,
             'Bet_Amount': self.Bet_Amount
         }
+    
+class BlackjackLeaderboard(db.Model):
+    __tablename__ = 'Blackjack'
+    __bind_key__ = 'leaderboard_schema'  # Use the specific bind for this schema
+    __table_args__ = {'schema': 'leaderboard_Schema'}
+
+    Score = db.Column(db.Integer)
+    Username = db.Column(db.String(255), primary_key=True)
+    Name = db.Column(db.String(255))
+
+    def _init_(self, Score, Username, Name):
+        self.Score = Score
+        self.Username = Username
+        self.Name = Name
+
+    def to_dict(self):
+        return {
+            'Score': self.Score,
+            'Username': self.Username,
+            'Name': self.Name
+        }
+    
+class Credentials(db.Model):
+    __tablename__ = 'Credentials'
+    __bind_key__ = 'user_schema'  # Use the specific bind for this schema
+    __table_args__ = {'schema': 'User_Schema'}
+
+    userID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(255), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(255), nullable=False)
+    balance = db.Column(db.Float, nullable=False)
+
+    def _init_(self, username, password, name, balance):
+        self.username = username
+        self.password = password
+        self.name = name
+        self.balance = balance
+
+    def to_dict(self):
+        return {
+            'userID': self.userID,
+            'username': self.username,
+            'name': self.name,
+            'balance': self.balance
+        }
 
 @app.route('/blackjack/sessions', methods=['GET'])
 def get_blackjack_sessions():
     sessions = BlackjackGameSession.query.all()
     return jsonify([session.to_dict() for session in sessions])
 
-# @app.route('/users/credentials', methods=['GET'])
-# def get_credentials():
-#     users = Credentials.query.all()
-#     return jsonify([user.to_dict() for user in users])
+@app.route('/users/credentials', methods=['GET'])
+def get_credentials():
+    users = Credentials.query.all()
+    return jsonify([user.to_dict() for user in users])
 
-# @app.route('/blackjack/leaderboard', methods=['GET'])
-# def get_blackjack_leaderboard():
-#     leaderboard = BlackjackLeaderboard.query.all()
-#     return jsonify([entry.to_dict() for entry in leaderboard])
+@app.route('/blackjack/leaderboard', methods=['GET'])
+def get_blackjack_leaderboard():
+    leaderboard = BlackjackLeaderboard.query.all()
+    return jsonify([entry.to_dict() for entry in leaderboard])
 
 # this is to keep track of all games, key is an id, value is the game...
 games: Dict[int, Game] = {}
