@@ -1,10 +1,64 @@
 from typing import Dict
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from lib.create_game_id import create_game_id
 from game import Game
+from flask_sqlalchemy import SQLAlchemy
+# from models import BlackjackGameSession
+# import pymysql
+# pymysql.install_as_MySQLdb()
+# from models.credentials_User import Credentials
+# from models.blacJack_Leaderboard import BlackjackLeaderboard
 import logging
 
 app = Flask(__name__, static_folder='../build', static_url_path='/')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://Ronitt:ceaser2720@casino-mysql-db.cuzrmwzagzwy.us-east-1.rds.amazonaws.com/GameSession_Schema'
+
+app.config['SQLALCHEMY_BINDS'] = {
+    'user_schema': 'mysql+pymysql://Ronitt:ceaser2720@casino-mysql-db.cuzrmwzagzwy.us-east-1.rds.amazonaws.com/User_Schema',
+    'leaderboard_schema': 'mysql+pymysql://Ronitt:ceaser2720@casino-mysql-db.cuzrmwzagzwy.us-east-1.rds.amazonaws.com/leaderboard_Schema'
+}
+
+
+app.config['SQL_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+print("\n DATABASE CONNECTION ESTABLISHED SUCCESSFULLY \n")
+
+class BlackjackGameSession(db.Model):
+    _tablename_ = 'kavin'
+    _table_args_ = {'schema': 'GameSession_Schema'}  # Define schema
+
+    Session_id = db.Column(db.Integer, primary_key=True)
+    Username = db.Column(db.String(255))
+    Bet_Amount = db.Column(db.Float)
+
+    def _init_(self, Session_id, Username, Bet_Amount):
+        self.Session_id = Session_id
+        self.Username = Username
+        self.Bet_Amount = Bet_Amount
+
+    def to_dict(self):
+        return {
+            'Session_id': self.Session_id,
+            'Username': self.Username,
+            'Bet_Amount': self.Bet_Amount
+        }
+
+@app.route('/blackjack/sessions', methods=['GET'])
+def get_blackjack_sessions():
+    sessions = BlackjackGameSession.query.all()
+    return jsonify([session.to_dict() for session in sessions])
+
+# @app.route('/users/credentials', methods=['GET'])
+# def get_credentials():
+#     users = Credentials.query.all()
+#     return jsonify([user.to_dict() for user in users])
+
+# @app.route('/blackjack/leaderboard', methods=['GET'])
+# def get_blackjack_leaderboard():
+#     leaderboard = BlackjackLeaderboard.query.all()
+#     return jsonify([entry.to_dict() for entry in leaderboard])
 
 # this is to keep track of all games, key is an id, value is the game...
 games: Dict[int, Game] = {}
